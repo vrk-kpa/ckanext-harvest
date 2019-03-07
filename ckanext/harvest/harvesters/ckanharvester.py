@@ -535,7 +535,6 @@ class CKANHarvester(HarvesterBase):
                 # key.
                 resource.pop('revision_id', None)
 
-
             # validate packages if needed
             validate_packages = self.config.get('validate_packages', {})
             if validate_packages:
@@ -552,13 +551,12 @@ class CKANHarvester(HarvesterBase):
                 else:
                     package_plugin = lib_plugins.lookup_package_plugin(package_dict['type'])
 
-
                 errors = {}
                 # if package has been previously imported
                 try:
                     existing_package_dict = self._find_existing_package(package_dict)
 
-                    if not 'metadata_modified' in package_dict or \
+                    if 'metadata_modified' not in package_dict or \
                             package_dict['metadata_modified'] > existing_package_dict.get('metadata_modified'):
                         schema = package_plugin.update_package_schema()
                         data, errors = lib_plugins.plugin_validate(
