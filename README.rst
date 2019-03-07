@@ -64,17 +64,18 @@ running a version lower than 2.0.
 
 There are a number of configuration options available for the backends. These don't need to be modified at all if you are using the default Redis or RabbitMQ install (step 1). However you may wish to add them with custom options to the into the CKAN config file the `[app:main]` section. The list below shows the available options and their default values:
 
-    * Redis:
-        - ``ckan.harvest.mq.hostname`` (localhost)
-        - ``ckan.harvest.mq.port`` (6379)
-        - ``ckan.harvest.mq.redis_db`` (0)
+* Redis:
+    - ``ckan.harvest.mq.hostname`` (localhost)
+    - ``ckan.harvest.mq.port`` (6379)
+    - ``ckan.harvest.mq.redis_db`` (0)
+    - ``ckan.harvest.mq.password`` (None)
 
-    * RabbitMQ:
-        - ``ckan.harvest.mq.user_id`` (guest)
-        - ``ckan.harvest.mq.password`` (guest)
-        - ``ckan.harvest.mq.hostname`` (localhost)
-        - ``ckan.harvest.mq.port`` (5672)
-        - ``ckan.harvest.mq.virtual_host`` (/)
+* RabbitMQ:
+    - ``ckan.harvest.mq.user_id`` (guest)
+    - ``ckan.harvest.mq.password`` (guest)
+    - ``ckan.harvest.mq.hostname`` (localhost)
+    - ``ckan.harvest.mq.port`` (5672)
+    - ``ckan.harvest.mq.virtual_host`` (/)
 
 
 **Note**: it is safe to use the same backend server (either Redis or RabbitMQ)
@@ -95,11 +96,11 @@ Run the following command to create the necessary tables in the database (ensuri
 
     (pyenv) $ paster --plugin=ckanext-harvest harvester initdb --config=/etc/ckan/default/production.ini
 
-Finally, restart CKAN to have the changes take affect:
+Finally, restart CKAN to have the changes take effect::
 
     sudo service apache2 restart
 
-After installation, the harvest source listing should be available under /harvest, eg:
+After installation, the harvest source listing should be available under /harvest, eg::
 
     http://localhost/harvest
 
@@ -113,17 +114,17 @@ Database logger configuration(optional)
 
      ckan.harvest.log_scope = 0
 
- * -1 - Do not log in the database - DEFAULT
- *  0 - Log everything
- *  1 - model, logic.action, logic.validators, harvesters
- *  2 - model, logic.action, logic.validators
- *  3 - model, logic.action
- *  4 - logic.action
- *  5 - model
- *  6 - plugin
- *  7 - harvesters
+   * -1 - Do not log in the database - DEFAULT
+   *  0 - Log everything
+   *  1 - model, logic.action, logic.validators, harvesters
+   *  2 - model, logic.action, logic.validators
+   *  3 - model, logic.action
+   *  4 - logic.action
+   *  5 - model
+   *  6 - plugin
+   *  7 - harvesters
 
-2. Setup time frame(in days) for the clean-up mechanism with the following config parameter (in the `[app:main]` section)::
+2. Setup time frame (in days) for the clean-up mechanism with the following config parameter (in the `[app:main]` section)::
 
      ckan.harvest.log_timeframe = 10
 
@@ -138,7 +139,7 @@ Database logger configuration(optional)
 
 **API Usage**
 
-You can access CKAN harvest logs via the API:
+You can access CKAN harvest logs via the API::
 
     $ curl {ckan_url}/api/3/action/harvest_log_list
 
@@ -146,13 +147,13 @@ Replace {ckan_url} with the url from your CKAN instance.
 
 Allowed parameters are:
 
-    * level (filter log records by level)
+* ``level`` (filter log records by level)
 
-    * limit (used for pagination)
+* ``limit`` (used for pagination)
 
-    * offset (used for pagination)
+* ``offset`` (used for pagination)
 
-e.g. Fetch all logs with log level INFO:
+e.g. Fetch all logs with log level INFO::
 
     $ curl {ckan_url}/api/3/action/harvest_log_list?level=info
 
@@ -165,6 +166,34 @@ e.g. Fetch all logs with log level INFO:
 
     }
 
+
+Dataset name generation configuration (optional)
+================================================
+
+If the dataset name is created based on the title, duplicate names may occur.
+To avoid this, a suffix is appended to the name if it already exists.
+
+You can configure the default behaviour in your production.ini:
+
+    ckanext.harvest.default_dataset_name_append = number-sequence
+
+or
+
+    ckanext.harvest.default_dataset_name_append = random-hex
+
+If you don't specify this setting, the default will be number-sequence.
+
+
+Send error mails when harvesting fails (optional)
+=================================================
+
+If you want to send an email when a Harvest Job fails, you can set the following configuration option in the ini file:
+
+    ckan.harvest.status_mail.errored = True
+
+That way, all CKAN Users who are declared as Sysadmins will receive the Error emails at their configured email address. If the Harvest-Source of the failing Harvest-Job belongs to an organization, the error-mail will also be sent to the organization-members who have the admin-role if their E-Mail is configured.
+
+If you don't specify this setting, the default will be False.
 
 
 Command line interface
@@ -374,6 +403,13 @@ field. The currently supported configuration options are:
     organizations_filter_exclude or organizations_filter_include should be
     configured.
 
+*   groups_filter_include: Exactly the same as organizations_filter_include but for
+    groups.
+
+*   groups_filter_exclude: Exactly the same as organizations_filter_exclude but for
+    groups.
+
+
 Here is an example of a configuration object (the one that must be entered in
 the configuration field)::
 
@@ -557,7 +593,7 @@ following methods::
 See the CKAN harvester for an example of how to implement the harvesting
 interface:
 
- ckanext-harvest/ckanext/harvest/harvesters/ckanharvester.py
+* ckanext-harvest/ckanext/harvest/harvesters/ckanharvester.py
 
 Here you can also find other examples of custom harvesters:
 
@@ -567,10 +603,10 @@ Here you can also find other examples of custom harvesters:
 Running the harvest jobs
 ========================
 
-There are two ways to run a harvest::
+There are two ways to run a harvest:
 
-    1. ``harvester run_test`` for the command-line, suitable for testing
-    2. ``harvester run`` used by the Web UI and scheduled runs
+1. ``harvester run_test`` for the command-line, suitable for testing
+2. ``harvester run`` used by the Web UI and scheduled runs
 
 harvester run_test
 ------------------
@@ -789,7 +825,7 @@ following steps with the one you are using.
 Tests
 =====
 
-You can run the tests like this:
+You can run the tests like this::
 
     cd ckanext-harvest
     nosetests --reset-db --ckan --with-pylons=test-core.ini ckanext/harvest/tests
@@ -801,6 +837,7 @@ Here are some common errors and solutions:
 
 * ``(ProgrammingError) relation "harvest_object_extra" does not exist``
   The database has got into in a bad state. Run the tests again but *without* the ``--reset-db`` parameter.
+  Alternatively it's because you forgot to use the ``--ckan`` parameter.
 
 * ``(OperationalError) near "SET": syntax error``
   You are testing with SQLite as the database, but the CKAN Harvester needs PostgreSQL. Specify test-core.ini instead of test.ini.

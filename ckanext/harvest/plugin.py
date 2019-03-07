@@ -1,6 +1,7 @@
-import types
+import json
 from logging import getLogger
 
+from six import string_types
 from sqlalchemy.util import OrderedDict
 
 from ckan import logic
@@ -13,14 +14,9 @@ except ImportError:
     class DefaultTranslation():
         pass
 
-from ckan.lib.navl import dictization_functions
-
-from ckanext.harvest import logic as harvest_logic
-
 from ckanext.harvest.model import setup as model_setup
 from ckanext.harvest.model import HarvestSource, HarvestJob, HarvestObject
 from ckanext.harvest.log import DBLogHandler
-
 
 
 log = getLogger(__name__)
@@ -43,10 +39,9 @@ class Harvest(p.SingletonPlugin, DefaultDatasetForm, DefaultTranslation):
     if p.toolkit.check_ckan_version(min_version='2.5.0'):
         p.implements(p.ITranslation, inherit=True)
 
-
     startup = False
 
-    ## IPackageController
+    # IPackageController
 
     def after_create(self, context, data_dict):
         if 'type' in data_dict and data_dict['type'] == DATASET_TYPE_NAME and not self.startup:
@@ -70,13 +65,12 @@ class Harvest(p.SingletonPlugin, DefaultDatasetForm, DefaultTranslation):
 
         # check_ckan_version should be more clever than this
         if p.toolkit.check_ckan_version(max_version='2.1.99') and (
-           not 'type' in data_dict or data_dict['type'] != DATASET_TYPE_NAME):
+           'type' not in data_dict or data_dict['type'] != DATASET_TYPE_NAME):
             # This is a normal dataset, check if it was harvested and if so, add
             # info about the HarvestObject and HarvestSource
             harvest_object = model.Session.query(HarvestObject) \
-                    .filter(HarvestObject.package_id==data_dict['id']) \
-                    .filter(HarvestObject.current==True) \
-                    .first()
+                    .filter(HarvestObject.package_id == data_dict['id']) \
+                    .filter(HarvestObject.current==True).first() # noqa
 
             if harvest_object:
                 for key, value in [
@@ -86,7 +80,6 @@ class Harvest(p.SingletonPlugin, DefaultDatasetForm, DefaultTranslation):
                         ]:
                     _add_extra(data_dict, key, value)
         return data_dict
-
 
     def before_search(self, search_params):
         '''Prevents the harvesters being shown in dataset search results.'''
@@ -117,14 +110,13 @@ class Harvest(p.SingletonPlugin, DefaultDatasetForm, DefaultTranslation):
 
             data_dict['status'] = status_action(context, {'id': source.id})
 
-        elif not 'type' in data_dict or data_dict['type'] != DATASET_TYPE_NAME:
+        elif 'type' not in data_dict or data_dict['type'] != DATASET_TYPE_NAME:
             # This is a normal dataset, check if it was harvested and if so, add
             # info about the HarvestObject and HarvestSource
 
             harvest_object = model.Session.query(HarvestObject) \
-                    .filter(HarvestObject.package_id==data_dict['id']) \
-                    .filter(HarvestObject.current==True) \
-                    .first()
+                    .filter(HarvestObject.package_id == data_dict['id']) \
+                    .filter(HarvestObject.current == True).first() # noqa
 
             # If the harvest extras are there, remove them. This can happen eg
             # when calling package_update or resource_update, which call
@@ -133,7 +125,6 @@ class Harvest(p.SingletonPlugin, DefaultDatasetForm, DefaultTranslation):
                 data_dict['extras'][:] = [e for e in data_dict.get('extras', [])
                                           if not e['key']
                                           in ('harvest_object_id', 'harvest_source_id', 'harvest_source_title',)]
-
 
             # We only want to add these extras at index time so they are part
             # of the cached data_dict used to display, search results etc. We
@@ -151,7 +142,7 @@ class Harvest(p.SingletonPlugin, DefaultDatasetForm, DefaultTranslation):
 
         return data_dict
 
-    ## IDatasetForm
+    # IDatasetForm
 
     def is_fallback(self):
         return False
@@ -176,10 +167,7 @@ class Harvest(p.SingletonPlugin, DefaultDatasetForm, DefaultTranslation):
 
     def setup_template_variables(self, context, data_dict):
 
-        p.toolkit.c.harvest_source = p.toolkit.c.pkg_dict
-
         p.toolkit.c.dataset_type = DATASET_TYPE_NAME
-
 
     def create_package_schema(self):
         '''
@@ -218,7 +206,7 @@ class Harvest(p.SingletonPlugin, DefaultDatasetForm, DefaultTranslation):
 
         # Setup harvest model
         model_setup()
-        
+
         # Configure database logger
         _configure_db_logger(config)
 
@@ -230,23 +218,29 @@ class Harvest(p.SingletonPlugin, DefaultDatasetForm, DefaultTranslation):
         # (ie they are the ones for a package type)
         controller = 'ckanext.harvest.controllers.view:ViewController'
 
-        map.connect('{0}_delete'.format(DATASET_TYPE_NAME), '/' + DATASET_TYPE_NAME + '/delete/:id',controller=controller, action='delete')
-        map.connect('{0}_refresh'.format(DATASET_TYPE_NAME), '/' + DATASET_TYPE_NAME + '/refresh/:id',controller=controller,
-                action='refresh')
-        map.connect('{0}_admin'.format(DATASET_TYPE_NAME), '/' + DATASET_TYPE_NAME + '/admin/:id', controller=controller, action='admin')
-        map.connect('{0}_about'.format(DATASET_TYPE_NAME), '/' + DATASET_TYPE_NAME + '/about/:id', controller=controller, action='about')
-        map.connect('{0}_clear'.format(DATASET_TYPE_NAME), '/' + DATASET_TYPE_NAME + '/clear/:id', controller=controller, action='clear')
+        map.connect('{0}_delete'.format(DATASET_TYPE_NAME), '/' + DATASET_TYPE_NAME + '/delete/:id',
+                    controller=controller, action='delete')
+        map.connect('{0}_refresh'.format(DATASET_TYPE_NAME), '/' + DATASET_TYPE_NAME + '/refresh/:id',
+                    controller=controller, action='refresh')
+        map.connect('{0}_admin'.format(DATASET_TYPE_NAME), '/' + DATASET_TYPE_NAME + '/admin/:id',
+                    controller=controller, action='admin')
+        map.connect('{0}_about'.format(DATASET_TYPE_NAME), '/' + DATASET_TYPE_NAME + '/about/:id',
+                    controller=controller, action='about')
+        map.connect('{0}_clear'.format(DATASET_TYPE_NAME), '/' + DATASET_TYPE_NAME + '/clear/:id',
+                    controller=controller, action='clear')
 
         map.connect('harvest_job_list', '/' + DATASET_TYPE_NAME + '/{source}/job', controller=controller, action='list_jobs')
-        map.connect('harvest_job_show_last', '/' + DATASET_TYPE_NAME + '/{source}/job/last', controller=controller, action='show_last_job')
-        map.connect('harvest_job_show', '/' + DATASET_TYPE_NAME + '/{source}/job/{id}', controller=controller, action='show_job')
-        map.connect('harvest_job_abort', '/' + DATASET_TYPE_NAME + '/{source}/job/{id}/abort', controller=controller, action='abort_job')
+        map.connect('harvest_job_show_last', '/' + DATASET_TYPE_NAME + '/{source}/job/last',
+                    controller=controller, action='show_last_job')
+        map.connect('harvest_job_show', '/' + DATASET_TYPE_NAME + '/{source}/job/{id}',
+                    controller=controller, action='show_job')
+        map.connect('harvest_job_abort', '/' + DATASET_TYPE_NAME + '/{source}/job/{id}/abort',
+                    controller=controller, action='abort_job')
 
-        map.connect('harvest_object_show', '/' + DATASET_TYPE_NAME + '/object/:id', controller=controller, action='show_object')
-        map.connect('harvest_object_for_dataset_show', '/dataset/harvest_object/:id', controller=controller, action='show_object', ref_type='dataset')
-
-        org_controller = 'ckanext.harvest.controllers.organization:OrganizationController'
-        map.connect('{0}_org_list'.format(DATASET_TYPE_NAME), '/organization/' + DATASET_TYPE_NAME + '/' + '{id}', controller=org_controller, action='source_list')
+        map.connect('harvest_object_show', '/' + DATASET_TYPE_NAME + '/object/:id',
+                    controller=controller, action='show_object')
+        map.connect('harvest_object_for_dataset_show', '/dataset/harvest_object/:id',
+                    controller=controller, action='show_object', ref_type='dataset')
 
         return map
 
@@ -263,7 +257,19 @@ class Harvest(p.SingletonPlugin, DefaultDatasetForm, DefaultTranslation):
         p.toolkit.add_resource('fanstatic_library', 'ckanext-harvest')
         p.toolkit.add_resource('public/ckanext/harvest/javascript', 'harvest-extra-field')
 
-    ## IActions
+        if p.toolkit.check_ckan_version(min_version='2.9.0'):
+            mappings = config.get('ckan.legacy_route_mappings', {})
+            if isinstance(mappings, string_types):
+                mappings = json.loads(mappings)
+
+            mappings.update({
+                'harvest_read': 'harvest.read',
+                'harvest_edit': 'harvest.edit',
+            })
+            # https://github.com/ckan/ckan/pull/4521
+            config['ckan.legacy_route_mappings'] = json.dumps(mappings)
+
+    # IActions
 
     def get_actions(self):
 
@@ -272,7 +278,7 @@ class Harvest(p.SingletonPlugin, DefaultDatasetForm, DefaultTranslation):
 
         return action_functions
 
-    ## IAuthFunctions
+    # IAuthFunctions
 
     def get_auth_functions(self):
 
@@ -281,7 +287,7 @@ class Harvest(p.SingletonPlugin, DefaultDatasetForm, DefaultTranslation):
 
         return auth_functions
 
-    ## ITemplateHelpers
+    # ITemplateHelpers
 
     def get_helpers(self):
         from ckanext.harvest import helpers as harvest_helpers
@@ -293,35 +299,39 @@ class Harvest(p.SingletonPlugin, DefaultDatasetForm, DefaultTranslation):
                 'harvest_frequencies': harvest_helpers.harvest_frequencies,
                 'link_for_harvest_object': harvest_helpers.link_for_harvest_object,
                 'harvest_source_extra_fields': harvest_helpers.harvest_source_extra_fields,
+                'bootstrap_version': harvest_helpers.bootstrap_version,
+                'get_harvest_source': harvest_helpers.get_harvest_source,
                 }
 
     def dataset_facets(self, facets_dict, package_type):
 
-        if package_type <> 'harvest':
+        if package_type != 'harvest':
             return facets_dict
 
         return OrderedDict([('frequency', 'Frequency'),
-                            ('source_type','Type'),
-                           ])
+                            ('source_type', 'Type'),
+                            ])
 
     def organization_facets(self, facets_dict, organization_type, package_type):
 
-        if package_type <> 'harvest':
+        if package_type != 'harvest':
             return facets_dict
 
         return OrderedDict([('frequency', 'Frequency'),
-                            ('source_type','Type'),
-                           ])
+                            ('source_type', 'Type'),
+                            ])
+
 
 def _add_extra(data_dict, key, value):
-    if not 'extras' in data_dict:
+    if 'extras' not in data_dict:
         data_dict['extras'] = []
 
     data_dict['extras'].append({
         'key': key, 'value': value, 'state': u'active'
     })
 
-def _get_logic_functions(module_root, logic_functions = {}):
+
+def _get_logic_functions(module_root, logic_functions={}):
 
     for module_name in ['get', 'create', 'update', 'patch', 'delete']:
         module_path = '%s.%s' % (module_root, module_name,)
@@ -332,11 +342,12 @@ def _get_logic_functions(module_root, logic_functions = {}):
             module = getattr(module, part)
 
         for key, value in module.__dict__.items():
-            if not key.startswith('_') and  (hasattr(value, '__call__')
-                        and (value.__module__ == module_path)):
+            if not key.startswith('_') and (hasattr(value, '__call__')
+                                            and (value.__module__ == module_path)):
                 logic_functions[key] = value
 
     return logic_functions
+
 
 def _create_harvest_source_object(context, data_dict):
     '''
@@ -366,7 +377,7 @@ def _create_harvest_source_object(context, data_dict):
            'publisher_id', 'config', 'frequency']
     for o in opt:
         if o in data_dict and data_dict[o] is not None:
-            source.__setattr__(o,data_dict[o])
+            source.__setattr__(o, data_dict[o])
 
     source.active = not data_dict.get('state', None) == 'deleted'
 
@@ -375,6 +386,7 @@ def _create_harvest_source_object(context, data_dict):
     log.info('Harvest source created: %s', source.id)
 
     return source
+
 
 def _update_harvest_source_object(context, data_dict):
     '''
@@ -397,14 +409,13 @@ def _update_harvest_source_object(context, data_dict):
         log.error('Harvest source %s does not exist', source_id)
         raise logic.NotFound('Harvest source %s does not exist' % source_id)
 
-
     fields = ['url', 'title', 'description', 'user_id',
               'publisher_id', 'frequency']
     for f in fields:
         if f in data_dict and data_dict[f] is not None:
             if f == 'url':
                 data_dict[f] = data_dict[f].strip()
-            source.__setattr__(f,data_dict[f])
+            source.__setattr__(f, data_dict[f])
 
     # Avoids clashes with the dataset type
     if 'source_type' in data_dict:
@@ -415,14 +426,14 @@ def _update_harvest_source_object(context, data_dict):
 
     # Don't change state unless explicitly set in the dict
     if 'state' in data_dict:
-      source.active = data_dict.get('state') == 'active'
+        source.active = data_dict.get('state') == 'active'
 
     # Don't commit yet, let package_create do it
     source.add()
 
     # Abort any pending jobs
     if not source.active:
-        jobs = HarvestJob.filter(source=source,status=u'New')
+        jobs = HarvestJob.filter(source=source, status=u'New')
         log.info('Harvest source %s not active, so aborting %i outstanding jobs', source_id, jobs.count())
         if jobs:
             for job in jobs:
@@ -430,6 +441,7 @@ def _update_harvest_source_object(context, data_dict):
                 job.add()
 
     return source
+
 
 def _delete_harvest_source_object(context, data_dict):
     '''
@@ -470,9 +482,10 @@ def _delete_harvest_source_object(context, data_dict):
 
     return source
 
+
 def _configure_db_logger(config):
     # Log scope
-    # 
+    #
     # -1 - do not log to the database
     #  0 - log everything
     #  1 - model, logic.action, logic.validators, harvesters
@@ -486,16 +499,16 @@ def _configure_db_logger(config):
     scope = p.toolkit.asint(config.get('ckan.harvest.log_scope', -1))
     if scope == -1:
         return
-    
+
     parent_logger = 'ckanext.harvest'
-    children = ['plugin', 'model', 'logic.action.create', 'logic.action.delete', 
-                'logic.action.get',  'logic.action.patch', 'logic.action.update', 
+    children = ['plugin', 'model', 'logic.action.create', 'logic.action.delete',
+                'logic.action.get',  'logic.action.patch', 'logic.action.update',
                 'logic.validators', 'harvesters.base', 'harvesters.ckanharvester']
-    
+
     children_ = {0: children, 1: children[1:], 2: children[1:-2],
                  3: children[1:-3], 4: children[2:-3], 5: children[1:2],
                  6: children[:1], 7: children[-2:]}
-    
+
     # Get log level from config param - default: DEBUG
     from logging import DEBUG, INFO, WARNING, ERROR, CRITICAL
     level = config.get('ckan.harvest.log_level', 'debug').upper()
@@ -513,7 +526,7 @@ def _configure_db_logger(config):
         level = DEBUG
 
     loggers = children_.get(scope)
-    
+
     # Get root logger and set db handler
     logger = getLogger(parent_logger)
     if scope < 1:

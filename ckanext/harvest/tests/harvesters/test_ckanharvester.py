@@ -133,7 +133,8 @@ class TestCkanHarvester(object):
         assert was_last_job_considered_error_free()
 
     def test_harvest_invalid_tag(self):
-        from nose.plugins.skip import SkipTest; raise SkipTest()
+        from nose.plugins.skip import SkipTest
+        raise SkipTest()
         results_by_guid = run_harvest(
             url='http://localhost:%s/invalid_tag' % mock_ckan.PORT,
             harvester=CKANHarvester())
@@ -154,6 +155,24 @@ class TestCkanHarvester(object):
 
     def test_include_organizations(self):
         config = {'organizations_filter_include': ['org1']}
+        results_by_guid = run_harvest(
+            url='http://localhost:%s' % mock_ckan.PORT,
+            harvester=CKANHarvester(),
+            config=json.dumps(config))
+        assert 'dataset1-id' in results_by_guid
+        assert mock_ckan.DATASETS[1]['id'] not in results_by_guid
+
+    def test_exclude_groups(self):
+        config = {'groups_filter_exclude': ['group1']}
+        results_by_guid = run_harvest(
+            url='http://localhost:%s' % mock_ckan.PORT,
+            harvester=CKANHarvester(),
+            config=json.dumps(config))
+        assert 'dataset1-id' not in results_by_guid
+        assert mock_ckan.DATASETS[1]['id'] in results_by_guid
+
+    def test_include_groups(self):
+        config = {'groups_filter_include': ['group1']}
         results_by_guid = run_harvest(
             url='http://localhost:%s' % mock_ckan.PORT,
             harvester=CKANHarvester(),
