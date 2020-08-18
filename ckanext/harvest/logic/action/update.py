@@ -1,10 +1,13 @@
+# -*- coding: utf-8 -*-
+
 import hashlib
 import json
+import six
 
 import logging
 import datetime
 
-from pylons import config
+from ckantoolkit import config
 from sqlalchemy import and_, or_
 
 from ckan.lib.search.index import PackageSearchIndex
@@ -21,10 +24,13 @@ from ckan.plugins import toolkit
 
 from ckan.logic import NotFound, check_access
 
-from ckanext.harvest.plugin import DATASET_TYPE_NAME
-from ckanext.harvest.queue import get_gather_publisher, resubmit_jobs
+from ckanext.harvest.utils import (
+    DATASET_TYPE_NAME
+)
+from ckanext.harvest.queue import (
+    get_gather_publisher, resubmit_jobs, resubmit_objects)
 
-from ckanext.harvest.model import HarvestSource, HarvestJob, HarvestObject
+from ckanext.harvest.model import HarvestSource, HarvestJob, HarvestObject, HarvestGatherError, HarvestObjectError
 from ckanext.harvest.logic import HarvestJobExists
 from ckanext.harvest.logic.dictization import harvest_job_dictize
 
@@ -329,7 +335,7 @@ def harvest_source_index_clear(context, data_dict):
             conn.delete_query(query)
             if solr_commit:
                 conn.commit()
-        except Exception, e:
+        except Exception as e:
             log.exception(e)
             raise SearchIndexError(e)
         finally:
@@ -338,7 +344,7 @@ def harvest_source_index_clear(context, data_dict):
         # conn is pysolr
         try:
             conn.delete(q=query, commit=solr_commit)
-        except Exception, e:
+        except Exception as e:
             log.exception(e)
             raise SearchIndexError(e)
 
@@ -431,7 +437,7 @@ def harvest_objects_import(context, data_dict):
 
     for obj_id in last_objects_ids:
         if segments and \
-                str(hashlib.md5(obj_id[0]).hexdigest())[0] not in segments:
+                str(hashlib.md5(six.ensure_binary(obj_id[0])).hexdigest())[0] not in segments:
             continue
 
         obj = session.query(HarvestObject).get(obj_id)
@@ -494,6 +500,10 @@ def harvest_jobs_run(context, data_dict):
     Runs scheduled jobs, checks if any jobs need marking as finished, and
     resubmits queue items if needed.
 
+    If ckanext.harvest.timeout is set:
+    Check if the duration of the job is longer than ckanext.harvest.timeout, 
+    then mark that job as finished as there is probably an underlying issue with the harvest process.
+
     This should be called every few minutes (e.g. by a cron), or else jobs
     will never show as finished.
 
@@ -508,6 +518,7 @@ def harvest_jobs_run(context, data_dict):
     '''
     log.info('Harvest job run: %r', data_dict)
     check_access('harvest_jobs_run', context, data_dict)
+    timeout = config.get('ckan.harvest.timeout')
 
     session = context['session']
 
@@ -524,6 +535,24 @@ def harvest_jobs_run(context, data_dict):
         context, {'source_id': source_id, 'status': u'Running'})
     if len(jobs):
         for job in jobs:
+            if timeout:
+                created = datetime.datetime.strptime(job['created'], '%Y-%m-%d %H:%M:%S.%f')
+                now = datetime.datetime.now()
+                if now - created > datetime.timedelta(minutes=int(timeout)):
+                    msg = 'Job timeout: %s is taking longer than %s minutes' % (job['id'], timeout)
+                    log.error(msg)
+
+                    job_obj = HarvestJob.get(job['id'])
+                    job_obj.status = u'Finished'
+                    job_obj.finished = now
+                    job_obj.save()
+
+                    err = HarvestGatherError(message=msg, job=job_obj)
+                    err.save()
+                    log.info('Marking job as finished due to error: %s %s',
+                            job_obj.source.url, job_obj.id)
+                    continue
+
             if job['gather_finished']:
                 num_objects_in_progress = \
                     session.query(HarvestObject.id) \
@@ -565,9 +594,13 @@ def harvest_jobs_run(context, data_dict):
                 else:
                     log.debug('Ongoing job:%s source:%s',
                               job['id'], job['source_id'])
+    log.debug('No jobs to send to the gather queue')
 
-    # resubmit old redis tasks
+    # Resubmit old redis tasks
     resubmit_jobs()
+
+    # Resubmit pending objects missing from Redis
+    resubmit_objects()
 
     return []  # merely for backwards compatibility
 
@@ -605,8 +638,10 @@ def send_error_mail(context, source_id, status):
     obj_error = ''
     job_error = ''
 
-    for harvest_object_error in islice(report.get('object_errors'), 0, 20):
-        obj_error += harvest_object_error['message'] + '\n'
+    for harvest_object_error_key in islice(report.get('object_errors'), 0, 20):
+        harvest_object_error = report.get('object_errors')[harvest_object_error_key]['errors']
+        for error in harvest_object_error:
+            obj_error += error['message']
 
     for harvest_gather_error in islice(report.get('gather_errors'), 0, 20):
         job_error += harvest_gather_error['message'] + '\n'
@@ -824,7 +859,7 @@ def harvest_source_reindex(context, data_dict):
         config = json.loads(package_dict.get('config', ''))
     except ValueError:
         config = {}
-    for key, value in package_dict.iteritems():
+    for key, value in package_dict.items():
         if key not in config:
             new_dict[key] = value
 
