@@ -338,7 +338,5 @@ class TestHarvestCorruptRedis(object):
             else:
                 assert "must be str, not NoneType" in str(args[1])
 
-
-
         finally:
             redis.delete('ckanext-harvest:some-random-key-2')
