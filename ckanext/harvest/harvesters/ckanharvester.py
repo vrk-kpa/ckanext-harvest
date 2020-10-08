@@ -546,6 +546,8 @@ class CKANHarvester(HarvesterBase):
                 # key.
                 resource.pop('revision_id', None)
 
+            package_dict = self.modify_package_dict(package_dict, harvest_object)
+            
             # validate packages if needed
             validate_packages = self.config.get('validate_packages', {})
             if validate_packages:
@@ -581,7 +583,6 @@ class CKANHarvester(HarvesterBase):
 
                 if errors:
                     raise ValidationError(errors)
-            package_dict = self.modify_package_dict(package_dict, harvest_object)
 
             result = self._create_or_update_package(
                 package_dict, harvest_object, package_dict_form='package_show')
