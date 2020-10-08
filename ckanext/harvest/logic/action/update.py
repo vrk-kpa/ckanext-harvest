@@ -16,7 +16,7 @@ from ckan.plugins import toolkit, PluginImplementations, IActions
 from ckan.logic import get_action
 from ckanext.harvest.interfaces import IHarvester
 from ckan.lib.search.common import SearchIndexError, make_connection
-
+from ckan.lib.base import render_jinja2
 
 from ckan.model import Package
 from ckan import logic
@@ -608,14 +608,16 @@ def harvest_jobs_run(context, data_dict):
         context, {'source_id': source_id, 'status': u'Running'})
     if len(jobs):
         for job in jobs:
+            job_obj = HarvestJob.get(job['id'])
             if timeout:
-                created = datetime.datetime.strptime(job['created'], '%Y-%m-%d %H:%M:%S.%f')
+                last_time = job_obj.get_last_action_time()
                 now = datetime.datetime.now()
-                if now - created > datetime.timedelta(minutes=int(timeout)):
-                    msg = 'Job timeout: %s is taking longer than %s minutes' % (job['id'], timeout)
-                    log.error(msg)
-
-                    job_obj = HarvestJob.get(job['id'])
+                if now - last_time > datetime.timedelta(minutes=int(timeout)):
+                    msg = 'Job {} timeout ({} minutes)\n'.format(job_obj.id, timeout)
+                    msg += '\tJob created: {}\n'.format(job_obj.created)
+                    msg += '\tJob gather finished: {}\n'.format(job_obj.created)
+                    msg += '\tJob last action time: {}\n'.format(last_time)
+                    
                     job_obj.status = u'Finished'
                     job_obj.finished = now
                     job_obj.save()
@@ -635,7 +637,7 @@ def harvest_jobs_run(context, data_dict):
                            .count()
 
                 if num_objects_in_progress == 0:
-                    job_obj = HarvestJob.get(job['id'])
+                    
                     job_obj.status = u'Finished'
                     log.info('Marking job as finished %s %s',
                              job_obj.source.url, job_obj.id)
@@ -672,8 +674,8 @@ def harvest_jobs_run(context, data_dict):
                     elif notify_all:
                         send_summary_email(context, job_obj.source.id, status)
                 else:
-                    log.debug('Ongoing job:%s source:%s',
-                              job['id'], job['source_id'])
+                    log.debug('%d Ongoing jobs for %s (source:%s)',
+                              num_objects_in_progress, job['id'], job['source_id'])
     log.debug('No jobs to send to the gather queue')
 
     # Resubmit old redis tasks
@@ -745,7 +747,7 @@ def get_mail_extra_vars(context, source_id, status):
 
 def prepare_summary_mail(context, source_id, status):
     extra_vars = get_mail_extra_vars(context, source_id, status)
-    body = toolkit.render('emails/summary_email.txt', extra_vars)
+    body = render_jinja2('emails/summary_email.txt', extra_vars)
     subject = '{} - Harvesting Job Successful - Summary Notification'\
                   .format(config.get('ckan.site_title'))
     
@@ -753,7 +755,7 @@ def prepare_summary_mail(context, source_id, status):
 
 def prepare_error_mail(context, source_id, status):
     extra_vars = get_mail_extra_vars(context, source_id, status)
-    body = toolkit.render('emails/error_email.txt', extra_vars)
+    body = render_jinja2('emails/error_email.txt', extra_vars)
     subject = '{} - Harvesting Job - Error Notification'\
               .format(config.get('ckan.site_title'))
 
