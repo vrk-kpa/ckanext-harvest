@@ -134,7 +134,12 @@ class CKANHarvester(HarvesterBase):
                 for group_name_or_id in config_obj['default_groups']:
                     try:
                         group = get_action('group_show')(
-                            context, {'id': group_name_or_id})
+                            context, {'id': group_name_or_id,
+                                      'include_users': False,
+                                      'include_dataset_count': False,
+                                      'include_groups': False,
+                                      'include_tags': False,
+                                      'include_followers': False})
                         # save the dict to the config object, as we'll need it
                         # in the import_stage of every dataset
                         config_obj['default_group_dicts'].append(group)
@@ -420,14 +425,24 @@ class CKANHarvester(HarvesterBase):
                     try:
                         try:
                             if 'id' in group_:
-                                data_dict = {'id': group_['id']}
+                                data_dict = {'id': group_['id'],
+                                             'include_users': False,
+                                             'include_dataset_count': False,
+                                             'include_groups': False,
+                                             'include_tags': False,
+                                             'include_followers': False}
                                 group = get_action('group_show')(base_context.copy(), data_dict)
                             else:
                                 raise NotFound
 
                         except NotFound as e:
                             if 'name' in group_:
-                                data_dict = {'id': group_['name']}
+                                data_dict = {'id': group_['name'],
+                                             'include_users': False,
+                                             'include_dataset_count': False,
+                                             'include_groups': False,
+                                             'include_tags': False,
+                                             'include_followers': False}
                                 group = get_action('group_show')(base_context.copy(), data_dict)
                             else:
                                 raise NotFound
@@ -471,7 +486,12 @@ class CKANHarvester(HarvesterBase):
 
                 if remote_org:
                     try:
-                        data_dict = {'id': remote_org}
+                        data_dict = {'id': remote_org,
+                                     'include_users': False,
+                                     'include_dataset_count': False,
+                                     'include_groups': False,
+                                     'include_tags': False,
+                                     'include_followers': False}
                         org = get_action('organization_show')(base_context.copy(), data_dict)
                         validated_org = org['id']
                     except NotFound as e:
