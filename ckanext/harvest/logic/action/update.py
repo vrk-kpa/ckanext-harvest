@@ -486,14 +486,12 @@ def harvest_objects_import(context, data_dict):
             session.query(HarvestObject.id) \
                    .filter(HarvestObject.id == harvest_object_id)
     elif package_id_or_name:
-        last_objects_ids = \
-            session.query(HarvestObject.id) \
-                   .join(Package) \
-                   .filter(
-                HarvestObject.current == True  # noqa: E712
-            ).filter(Package.state == u'active') \
-                   .filter(or_(Package.id == package_id_or_name,
-                               Package.name == package_id_or_name))
+        last_objects_ids = (session.query(HarvestObject.id)
+                            .join(Package)
+                            .filter(HarvestObject.current == True)  # noqa: E712
+                            .filter(Package.state == u'active')
+                            .filter(or_(Package.id == package_id_or_name,
+                                        Package.name == package_id_or_name)))
         join_datasets = False
     else:
         last_objects_ids = \
@@ -931,7 +929,7 @@ def harvest_source_reindex(context, data_dict):
 
     defer_commit = context.get('defer_commit', False)
 
-    if 'extras_as_string'in context:
+    if 'extras_as_string' in context:
         del context['extras_as_string']
     context.update({'ignore_auth': True})
     package_dict = logic.get_action('harvest_source_show')(
