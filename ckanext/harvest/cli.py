@@ -237,11 +237,14 @@ def gather_consumer():
 
 
 @harvester.command()
-def fetch_consumer():
+@click.pass_context
+def fetch_consumer(ctx):
     """Starts the consumer for the fetching queue.
 
     """
-    utils.fetch_consumer()
+    flask_app = ctx.meta["flask_app"]
+    with flask_app.test_request_context():
+        utils.fetch_consumer()
 
 
 @harvester.command()
