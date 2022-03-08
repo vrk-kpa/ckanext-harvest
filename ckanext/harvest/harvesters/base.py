@@ -8,7 +8,6 @@ import six
 from sqlalchemy import exists, and_
 from sqlalchemy.orm import contains_eager
 from sqlalchemy.sql import update, bindparam
-from sqlalchemy.orm import contains_eager
 
 from ckantoolkit import config
 
