@@ -107,13 +107,13 @@ def harvest_source_show_status(context, data_dict):
     out['last_job'] = harvest_job_dictize(last_job, context)
 
     # Overall statistics
-    packages = model.Session.query(model.Package) \
-        .join(harvest_model.HarvestObject) \
-        .filter(harvest_model.HarvestObject.harvest_source_id == source.id) \
-        .filter(
-        harvest_model.HarvestObject.current == True  # noqa: E712
-    ).filter(model.Package.state == u'active') \
-        .filter(model.Package.private == False)
+    packages = (
+            model.Session.query(model.Package)
+            .join(harvest_model.HarvestObject)
+            .filter(harvest_model.HarvestObject.harvest_source_id == source.id)
+            .filter(harvest_model.HarvestObject.current == True)  # noqa: E712
+            .filter(model.Package.state == u'active')
+            .filter(model.Package.private == False))  # noqa: E712
     out['total_datasets'] = packages.count()
 
     return out
