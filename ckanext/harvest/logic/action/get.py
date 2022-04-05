@@ -132,7 +132,15 @@ def harvest_source_list(context, data_dict):
 
     last_job_status = p.toolkit.asbool(data_dict.get('return_last_job_status', False))
 
-    return [harvest_source_dictize(source, context, last_job_status) for source in sources]
+    result = []
+    for source in sources:
+        try:
+            result.append(harvest_source_dictize(source, context, last_job_status))
+        except p.toolkit.NotAuthorized:
+            pass
+
+    return result
+    # return [harvest_source_dictize(source, context, last_job_status) for source in sources]
 
 
 @side_effect_free
