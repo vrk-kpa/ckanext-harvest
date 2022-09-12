@@ -229,25 +229,19 @@ def purge_queues():
 
 
 @harvester.command()
-@click.pass_context
-def gather_consumer(ctx):
+def gather_consumer():
     """Starts the consumer for the gathering queue.
 
     """
-    flask_app = ctx.meta["flask_app"]
-    with flask_app.test_request_context():
-        utils.gather_consumer()
+    utils.gather_consumer()
 
 
 @harvester.command()
-@click.pass_context
-def fetch_consumer(ctx):
+def fetch_consumer():
     """Starts the consumer for the fetching queue.
 
     """
-    flask_app = ctx.meta["flask_app"]
-    with flask_app.test_request_context():
-        utils.fetch_consumer()
+    utils.fetch_consumer()
 
 
 @harvester.command()
