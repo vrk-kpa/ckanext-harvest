@@ -2,7 +2,10 @@ from __future__ import absolute_import
 import copy
 
 import json
-from mock import patch, MagicMock, Mock
+try:
+    from unittest.mock import patch, MagicMock, Mock
+except ImportError:
+    from mock import patch, MagicMock, Mock
 import pytest
 from requests.exceptions import HTTPError, RequestException
 
@@ -171,6 +174,19 @@ class TestCkanHarvester(object):
         # Check that the remote group was created locally
         call_action('group_show', {}, id=mock_ckan.GROUPS[0]['id'])
 
+    def test_harvest_info_in_package_show(self):
+        results_by_guid = run_harvest(
+            url='http://localhost:%s' % mock_ckan.PORT,
+            harvester=CKANHarvester())
+        assert 'dataset1-id' in results_by_guid
+
+        # Check that the dataset extras has the harvest_object_id, harvest_source_id, and harvest_source_title
+        dataset = call_action('package_show', {"for_view": True}, id=mock_ckan.DATASETS[0]['id'])
+        extras_dict = dict((e['key'], e['value']) for e in dataset['extras'])
+        assert 'harvest_object_id' in extras_dict
+        assert 'harvest_source_id' in extras_dict
+        assert 'harvest_source_title' in extras_dict
+
     def test_remote_groups_only_local(self):
         # Create an existing group
         Group(id='group1-id', name='group1')
@@ -308,11 +324,10 @@ class TestCkanHarvester(object):
 
         assert 'default_extras must be a dictionary' in str(harvest_context.value)
 
-    @patch('ckanext.harvest.harvesters.ckanharvester.pyopenssl.inject_into_urllib3')
     @patch('ckanext.harvest.harvesters.ckanharvester.CKANHarvester.config')
     @patch('ckanext.harvest.harvesters.ckanharvester.requests.get', side_effect=RequestException('Test.value'))
     def test_get_content_handles_request_exception(
-        self, mock_requests_get, mock_config, mock_pyopenssl_inject
+        self, mock_requests_get, mock_config
     ):
         mock_config.return_value = {}
 
@@ -330,11 +345,10 @@ class TestCkanHarvester(object):
             self.request = Mock()
             self.request.url = "http://test.example.gov.uk"
 
-    @patch('ckanext.harvest.harvesters.ckanharvester.pyopenssl.inject_into_urllib3')
     @patch('ckanext.harvest.harvesters.ckanharvester.CKANHarvester.config')
     @patch('ckanext.harvest.harvesters.ckanharvester.requests.get', side_effect=MockHTTPError())
     def test_get_content_handles_http_error(
-        self, mock_requests_get, mock_config, mock_pyopenssl_inject
+        self, mock_requests_get, mock_config
     ):
         mock_config.return_value = {}
 

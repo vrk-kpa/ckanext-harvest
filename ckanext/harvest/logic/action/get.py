@@ -107,13 +107,15 @@ def harvest_source_show_status(context, data_dict):
     out['last_job'] = harvest_job_dictize(last_job, context)
 
     # Overall statistics
-    packages = (
-            model.Session.query(model.Package)
-            .join(harvest_model.HarvestObject)
-            .filter(harvest_model.HarvestObject.harvest_source_id == source.id)
-            .filter(harvest_model.HarvestObject.current == True)  # noqa: E712
-            .filter(model.Package.state == u'active')
-            .filter(model.Package.private == False))  # noqa: E712
+    packages = model.Session.query(model.Package) \
+        .join(harvest_model.HarvestObject) \
+        .filter(harvest_model.HarvestObject.harvest_source_id == source.id) \
+        .filter(
+        harvest_model.HarvestObject.current == True  # noqa: E712
+    ).filter(model.Package.state == u'active') \
+        .filter(
+        model.Package.private == False  # noqa: E712
+    )
     out['total_datasets'] = packages.count()
 
     return out
@@ -442,11 +444,14 @@ def harvest_get_notifications_recipients(context, data_dict):
         model.User.sysadmin == True  # noqa: E712
     ).all()
 
+    # Send mail to all sysadmins with a non-empty email address
     for sysadmin in sysadmins:
-        recipients.append({
-            'name': sysadmin.name,
-            'email': sysadmin.email
-        })
+        email_address = sysadmin.email
+        if email_address and email_address.strip():
+            recipients.append({
+                'name': sysadmin.name,
+                'email': email_address,
+            })
 
     # gather organization-admins
     if source.get('organization'):
@@ -456,14 +461,17 @@ def harvest_get_notifications_recipients(context, data_dict):
             'capacity': 'admin'
         })
 
+        # Get access to email address by running action as admin user
+        context['user'] = p.toolkit.get_action('get_site_user')({'ignore_auth': True})['name']
         for member in members:
             member_details = p.toolkit.get_action(
                 'user_show')(context, {'id': member[0]})
 
-            if member_details['email']:
+            email_address = member_details.get('email', None)
+            if email_address and email_address.strip():
                 recipients.append({
                     'name': member_details['name'],
-                    'email': member_details['email']
+                    'email': email_address
                 })
 
     return recipients

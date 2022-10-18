@@ -12,6 +12,63 @@ Unreleased_
 ***********
 
 ***********
+1.4.1_ - 2022-09-20
+***********
+
+Changed
+-------
+
+- Use requirements.txt instead of pip-requirements.txt (still working via symlink) 8ed1eca
+
+Fixed
+-----
+
+- Bump pyopenssl requirement to avoid requirements error on install 98edcd3
+- Fixes unicode error in Python 2 #502
+- Fixes in email notification sendngi  #499, #505
+- Fix pagination for Dataset list on source page #504
+
+***********
+1.4.0_ - 2022-04-20
+***********
+
+Changed
+-------
+
+- Add ckan.harvest.not_overwrite_fields #472
+- Support for Bootstrap 5 templates #490
+- Support for CKAN 2.10 #492 #496
+
+Fixed
+-----
+
+- Fix JSONDecode error #489
+- Check if email exists before sending notification #498
+
+
+***********
+1.3.4_ - 2022-01-24
+***********
+
+Changed
+-------
+
+- Changes function calls to `render_jinja2` over to `render` as the former is
+  no longer used. #459
+- Set the default value for MQ_TYPE to redis #463
+- Add option `keep-current` to `clearsource_history` command #484
+
+Fixed
+-----
+
+- Fix JSON serialization for Python3 #450
+- Make `Rehavest` and `Clear` buttons work again #452
+- Fix error when running run-test #466
+- Fix timeout calculation #482
+- Fix harvest extras for packages #458
+
+
+***********
 1.3.3_ - 2021-03-26
 ***********
 
