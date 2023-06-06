@@ -1,18 +1,23 @@
-# Translations template for ckanext-harvest.
-# Copyright (C) 2023 ORGANIZATION
+# English (United Kingdom) translations for ckanext-harvest.
+# Copyright (C) 2015 ORGANIZATION
 # This file is distributed under the same license as the ckanext-harvest
 # project.
-# FIRST AUTHOR <EMAIL@ADDRESS>, 2023.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2015.
 #
+# Translators:
+# Jonna Jantunen <jonna.jantunen@vrk.fi>, 2019
 #, fuzzy
 msgid ""
 msgstr ""
-"Project-Id-Version: ckanext-harvest 1.4.1\n"
+"Project-Id-Version: ckanext-harvest 0.2\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
 "POT-Creation-Date: 2023-06-06 14:16+0000\n"
-"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
-"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
-"Language-Team: LANGUAGE <LL@li.org>\n"
+"PO-Revision-Date: 2019-07-10 11:43+0000\n"
+"Last-Translator: Jonna Jantunen <jonna.jantunen@vrk.fi>, 2019\n"
+"Language: en_GB\n"
+"Language-Team: English (United Kingdom) "
+"(https://app.transifex.com/avoindata/teams/7979/en_GB/)\n"
+"Plural-Forms: nplurals=2; plural=(n != 1)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -26,17 +31,18 @@ msgstr ""
 msgid "Not authorized to see this page"
 msgstr ""
 
-#: ckanext/harvest/logic/auth/create.py:34 ckanext/harvest/logic/auth/delete.py:18
-#: ckanext/harvest/logic/auth/get.py:32 ckanext/harvest/logic/auth/update.py:19
-#: ckanext/harvest/utils.py:518 ckanext/harvest/utils.py:538
-#: ckanext/harvest/utils.py:608 ckanext/harvest/utils.py:626
-#: ckanext/harvest/utils.py:660 ckanext/harvest/utils.py:686
-#: ckanext/harvest/utils.py:717
+#: ckanext/harvest/logic/auth/create.py:34
+#: ckanext/harvest/logic/auth/delete.py:18 ckanext/harvest/logic/auth/get.py:32
+#: ckanext/harvest/logic/auth/update.py:19 ckanext/harvest/utils.py:518
+#: ckanext/harvest/utils.py:538 ckanext/harvest/utils.py:608
+#: ckanext/harvest/utils.py:626 ckanext/harvest/utils.py:660
+#: ckanext/harvest/utils.py:686 ckanext/harvest/utils.py:717
 msgid "Harvest source not found"
 msgstr ""
 
 #: ckanext/harvest/templates/source/admin.html:15
-#: ckanext/harvest/templates/source/job/list.html:12 ckanext/harvest/utils.py:547
+#: ckanext/harvest/templates/source/job/list.html:12
+#: ckanext/harvest/utils.py:547
 msgid "No jobs yet for this source"
 msgstr ""
 
@@ -54,8 +60,8 @@ msgstr ""
 
 #: ckanext/harvest/utils.py:665
 msgid ""
-"Cannot create new harvest jobs on inactive sources. First, please change the "
-"source status to \"active\"."
+"Cannot create new harvest jobs on inactive sources. First, please change "
+"the source status to \"active\"."
 msgstr ""
 
 #: ckanext/harvest/utils.py:670
@@ -199,7 +205,7 @@ msgstr[1] ""
 
 #: ckanext/harvest/templates/snippets/search_result_text.html:5
 msgid "Sorry no harvest sources found for \"{query}\""
-msgstr ""
+msgstr "No harvest sources found for \"{query}\""
 
 #: ckanext/harvest/templates/snippets/search_result_text.html:6
 msgid "{number} harvest source found"
@@ -254,10 +260,10 @@ msgstr ""
 
 #: ckanext/harvest/templates/source/admin_base.html:14
 msgid ""
-"This will re-run the harvesting for this source. Any updates at the source "
-"will overwrite the local datasets. Sources with a large number of datasets "
-"may take a significant amount of time to finish harvesting. Please confirm "
-"you would like us to start reharvesting."
+"This will re-run the harvesting for this source. Any updates at the "
+"source will overwrite the local datasets. Sources with a large number of "
+"datasets may take a significant amount of time to finish harvesting. "
+"Please confirm you would like us to start reharvesting."
 msgstr ""
 
 #: ckanext/harvest/templates/source/admin_base.html:17
@@ -335,10 +341,10 @@ msgstr ""
 
 #: ckanext/harvest/templates/source/new.html:31
 msgid ""
-"Harvest sources allow importing remote metadata into this catalog. Remote "
-"sources can be other catalogs such as other CKAN instances, CSW servers or "
-"Web Accessible Folders (WAF) (depending on the actual harvesters enabled for "
-"this instance)."
+"Harvest sources allow importing remote metadata into this catalog. Remote"
+" sources can be other catalogs such as other CKAN instances, CSW servers "
+"or Web Accessible Folders (WAF) (depending on the actual harvesters "
+"enabled for this instance)."
 msgstr ""
 
 #: ckanext/harvest/templates/source/new_source_form.html:11
@@ -391,15 +397,15 @@ msgstr ""
 
 #: ckanext/harvest/templates/source/new_source_form.html:97
 msgid ""
-"This will flag the source as deleted but keep all its datasets and previous "
-"jobs. Are you sure you want to delete this harvest source?"
+"This will flag the source as deleted but keep all its datasets and "
+"previous jobs. Are you sure you want to delete this harvest source?"
 msgstr ""
 
 #: ckanext/harvest/templates/source/new_source_form.html:98
 msgid ""
-"Warning: Apart from deleting this source, this command will remove all its "
-"datasets, as well as all previous job reports. Are you sure you want to "
-"continue?"
+"Warning: Apart from deleting this source, this command will remove all "
+"its datasets, as well as all previous job reports. Are you sure you want "
+"to continue?"
 msgstr ""
 
 #: ckanext/harvest/templates/source/new_source_form.html:101
@@ -506,4 +512,70 @@ msgstr ""
 #: ckanext/harvest/templates/source/job/read.html:73
 msgid "Local content"
 msgstr ""
+
+#~ msgid "Group not found"
+#~ msgstr ""
+
+#~ msgid "Unauthorized to read group %s"
+#~ msgstr ""
+
+#~ msgid "Groups"
+#~ msgstr ""
+
+#~ msgid "Tags"
+#~ msgstr ""
+
+#~ msgid "Formats"
+#~ msgstr ""
+
+#~ msgid "Licence"
+#~ msgstr ""
+
+#~ msgid ""
+#~ "Cannot create new harvest jobs on "
+#~ "inactive sources. First, please change "
+#~ "the source status to 'active'."
+#~ msgstr ""
+
+#~ msgid ""
+#~ " Harvest sources allow importing remote"
+#~ " metadata into this catalog. Remote "
+#~ "sources can be other catalogs such "
+#~ "as other CKAN instances, CSW servers "
+#~ "or Web Accessible Folders (WAF) "
+#~ "(depending on the actual harvesters "
+#~ "enabled for this instance). "
+#~ msgstr ""
+
+#~ msgid "Return to the harvest sources list"
+#~ msgstr ""
+
+#~ msgid " found for \"{query}\""
+#~ msgstr ""
+
+#~ msgid "Search sources..."
+#~ msgstr ""
+
+#~ msgid "Search"
+#~ msgstr ""
+
+#~ msgid "Search..."
+#~ msgstr ""
+
+#~ msgid "All harvest sources"
+#~ msgstr ""
+
+#~ msgid "Remove"
+#~ msgstr ""
+
+#~ msgid "Try another search term, browse the sources below or "
+#~ msgstr ""
+
+#~ msgid "add a new one"
+#~ msgstr ""
+
+#~ msgid ""
+#~ " <p><strong>There was an error while "
+#~ "searching.</strong> Please try again.</p> "
+#~ msgstr ""
 

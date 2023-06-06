@@ -1,18 +1,25 @@
-# Translations template for ckanext-harvest.
-# Copyright (C) 2023 ORGANIZATION
+# Finnish translations for ckanext-harvest.
+# Copyright (C) 2015 ORGANIZATION
 # This file is distributed under the same license as the ckanext-harvest
 # project.
-# FIRST AUTHOR <EMAIL@ADDRESS>, 2023.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2015.
 #
+# Translators:
+# Zharktas <jari-pekka.voutilainen@gofore.com>, 2019
+# Jonna Jantunen <jonna.jantunen@vrk.fi>, 2020
+# Meeri Hakala <meeri.hakala@dvv.fi>, 2022
 #, fuzzy
 msgid ""
 msgstr ""
-"Project-Id-Version: ckanext-harvest 1.4.1\n"
+"Project-Id-Version: ckanext-harvest 0.2\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
 "POT-Creation-Date: 2023-06-06 14:16+0000\n"
-"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
-"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
-"Language-Team: LANGUAGE <LL@li.org>\n"
+"PO-Revision-Date: 2019-07-10 11:43+0000\n"
+"Last-Translator: Meeri Hakala <meeri.hakala@dvv.fi>, 2022\n"
+"Language: fi\n"
+"Language-Team: Finnish "
+"(https://app.transifex.com/avoindata/teams/7979/fi/)\n"
+"Plural-Forms: nplurals=2; plural=(n != 1)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -26,17 +33,18 @@ msgstr ""
 msgid "Not authorized to see this page"
 msgstr ""
 
-#: ckanext/harvest/logic/auth/create.py:34 ckanext/harvest/logic/auth/delete.py:18
-#: ckanext/harvest/logic/auth/get.py:32 ckanext/harvest/logic/auth/update.py:19
-#: ckanext/harvest/utils.py:518 ckanext/harvest/utils.py:538
-#: ckanext/harvest/utils.py:608 ckanext/harvest/utils.py:626
-#: ckanext/harvest/utils.py:660 ckanext/harvest/utils.py:686
-#: ckanext/harvest/utils.py:717
+#: ckanext/harvest/logic/auth/create.py:34
+#: ckanext/harvest/logic/auth/delete.py:18 ckanext/harvest/logic/auth/get.py:32
+#: ckanext/harvest/logic/auth/update.py:19 ckanext/harvest/utils.py:518
+#: ckanext/harvest/utils.py:538 ckanext/harvest/utils.py:608
+#: ckanext/harvest/utils.py:626 ckanext/harvest/utils.py:660
+#: ckanext/harvest/utils.py:686 ckanext/harvest/utils.py:717
 msgid "Harvest source not found"
-msgstr ""
+msgstr "Harvestointilähdettä ei löytynyt"
 
 #: ckanext/harvest/templates/source/admin.html:15
-#: ckanext/harvest/templates/source/job/list.html:12 ckanext/harvest/utils.py:547
+#: ckanext/harvest/templates/source/job/list.html:12
+#: ckanext/harvest/utils.py:547
 msgid "No jobs yet for this source"
 msgstr ""
 
@@ -45,30 +53,34 @@ msgid "Harvest job not found"
 msgstr ""
 
 #: ckanext/harvest/utils.py:636
+#, fuzzy
+#| msgid "Harvest Jobs"
 msgid "Harvest job stopped"
-msgstr ""
+msgstr "Harvestointiajot"
 
 #: ckanext/harvest/utils.py:658
 msgid "Harvest will start shortly. Refresh this page for updates."
 msgstr ""
+"Harvestointi alkaa hetken kuluttua. Päivitä tämä sivu nähdäksesi tietoja "
+"harvestoinnin tilasta."
 
 #: ckanext/harvest/utils.py:665
 msgid ""
-"Cannot create new harvest jobs on inactive sources. First, please change the "
-"source status to \"active\"."
+"Cannot create new harvest jobs on inactive sources. First, please change "
+"the source status to \"active\"."
 msgstr ""
 
 #: ckanext/harvest/utils.py:670
 msgid "A harvest job has already been scheduled for this source"
-msgstr ""
+msgstr "Tälle lähteelle on jo ajastettu harvestointiajo"
 
 #: ckanext/harvest/utils.py:684
 msgid "Harvest source cleared"
-msgstr ""
+msgstr "Harvestointilähde tyhjennetty"
 
 #: ckanext/harvest/utils.py:710
 msgid "Harvesting source successfully cleared"
-msgstr ""
+msgstr "Harvestointilähde tyhjennetty onnistuneesti"
 
 #: ckanext/harvest/utils.py:712
 msgid "Harvesting source successfully inactivated"
@@ -82,21 +94,23 @@ msgstr ""
 #: ckanext/harvest/templates/source/job/read.html:18
 #: ckanext/harvest/templates/source/job/read.html:22
 msgid "Error Summary"
-msgstr ""
+msgstr "Yhteenveto virheistä"
 
 #: ckanext/harvest/logic/action/update.py:779
+#, fuzzy
+#| msgid "Document Errors"
 msgid "Document Error"
-msgstr ""
+msgstr "Tietoaineiston virheet"
 
 #: ckanext/harvest/logic/action/update.py:780
 #: ckanext/harvest/templates/source/job/read.html:26
 #: ckanext/harvest/templates/source/job/read.html:40
 msgid "Job Errors"
-msgstr ""
+msgstr "Harvestointivirheet"
 
 #: ckanext/harvest/logic/auth/create.py:19
 msgid "User {0} not authorized to create harvest sources"
-msgstr ""
+msgstr "Käyttäjällä {0} ei ole oikeuksia luoda uutta harvestointilähdettä"
 
 #: ckanext/harvest/logic/auth/create.py:42
 msgid "User not authorized to create a job for source {0}"
@@ -112,7 +126,7 @@ msgstr ""
 
 #: ckanext/harvest/logic/auth/delete.py:27
 msgid "User {0} not authorized to delete harvest source {1}"
-msgstr ""
+msgstr "Käyttäjällä {0} ei ole oikeuksia poistaa harvestointilähdettä {1} "
 
 #: ckanext/harvest/logic/auth/get.py:41
 msgid "User {0} not authorized to read harvest source {1}"
@@ -128,7 +142,7 @@ msgstr ""
 
 #: ckanext/harvest/logic/auth/update.py:28
 msgid "User {0} not authorized to update harvest source {1}"
-msgstr ""
+msgstr "Käyttäjällä {0} ei ole oikeuksia päivittää harvestointilähdettä {1}"
 
 #: ckanext/harvest/logic/auth/update.py:38
 msgid "Only sysadmins can clear history for all harvest jobs"
@@ -148,12 +162,12 @@ msgstr ""
 
 #: ckanext/harvest/templates/snippets/add_source_button.html:6
 msgid "Add Harvest Source"
-msgstr ""
+msgstr "Lisää harvestointilähde"
 
 #: ckanext/harvest/templates/snippets/job_details.html:26
 #: ckanext/harvest/templates/source/job/list.html:43
 msgid "errors"
-msgstr ""
+msgstr "virhettä"
 
 #: ckanext/harvest/templates/snippets/job_details.html:41
 msgid "Details"
@@ -161,70 +175,70 @@ msgstr ""
 
 #: ckanext/harvest/templates/snippets/job_details.html:48
 msgid "Id"
-msgstr ""
+msgstr "ID"
 
 #: ckanext/harvest/templates/snippets/job_details.html:52
 msgid "Created"
-msgstr ""
+msgstr "Luotu"
 
 #: ckanext/harvest/templates/snippets/job_details.html:60
 msgid "Started"
-msgstr ""
+msgstr "Aloitettu"
 
 #: ckanext/harvest/templates/snippets/job_details.html:68
 msgid "Finished"
-msgstr ""
+msgstr "Valmis"
 
 #: ckanext/harvest/templates/snippets/job_details.html:76
 msgid "Status"
-msgstr ""
+msgstr "Tila"
 
 #: ckanext/harvest/templates/snippets/job_error_summary.html:18
 msgid "Count"
-msgstr ""
+msgstr "Määrä"
 
 #: ckanext/harvest/templates/snippets/job_error_summary.html:19
 msgid "Message"
-msgstr ""
+msgstr "Viesti"
 
 #: ckanext/harvest/templates/snippets/package_list_empty.html:1
 msgid "There are no datasets associated to this harvest source."
-msgstr ""
+msgstr "Tällä harvestointilähteellä ei ole tietoaineistoja."
 
 #: ckanext/harvest/templates/snippets/search_result_text.html:4
 msgid "{number} harvest source found for \"{query}\""
 msgid_plural "{number} harvest sources found for \"{query}\""
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "Haulla \"{query}\" löytyi {number} harvestointikohde"
+msgstr[1] "Haulla \"{query}\" löytyi {number} harvestointilähdettä"
 
 #: ckanext/harvest/templates/snippets/search_result_text.html:5
 msgid "Sorry no harvest sources found for \"{query}\""
-msgstr ""
+msgstr "Haulla \"{query}\" ei löytynyt harvestointilähteitä"
 
 #: ckanext/harvest/templates/snippets/search_result_text.html:6
 msgid "{number} harvest source found"
 msgid_plural "{number} harvest sources found"
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "Löytyi {number} harvestointikohde"
+msgstr[1] "Löytyi {number} harvestointilähdettä"
 
 #: ckanext/harvest/templates/snippets/search_result_text.html:7
 msgid "Sorry no harvest sources found"
-msgstr ""
+msgstr "Harvestointilähteitä ei löytynyt"
 
 #: ckanext/harvest/templates/snippets/source_item.html:33
 msgid "Draft"
-msgstr ""
+msgstr "Luonnos"
 
 #: ckanext/harvest/templates/snippets/source_item.html:35
 #: ckanext/harvest/templates/source/new_source_form.html:88
 msgid "Deleted"
-msgstr ""
+msgstr "Poistettu"
 
 #: ckanext/harvest/templates/snippets/source_item.html:42
 #: ckanext/harvest/templates/source/about.html:9
 #: ckanext/harvest/templates/source/read_base.html:27
 msgid "There is no description for this harvest source"
-msgstr ""
+msgstr "Harvestointilähteellä ei ole kuvausta"
 
 #: ckanext/harvest/templates/snippets/source_item.html:47
 #: ckanext/harvest/templates/source/read.html:5
@@ -232,20 +246,20 @@ msgstr ""
 #: ckanext/harvest/templates/source/read_base.html:52
 #: ckanext/harvest/templates/source/read_base.html:55
 msgid "Datasets"
-msgstr ""
+msgstr "Tietoaineistot"
 
 #: ckanext/harvest/templates/snippets/source_item.html:50
 #: ckanext/harvest/templates/source/new_source_form.html:68
 msgid "Organization"
-msgstr ""
+msgstr "Tuottaja"
 
 #: ckanext/harvest/templates/source/admin.html:5
 msgid "Last Harvest Job"
-msgstr ""
+msgstr "Viimeisin harvestointiajo"
 
 #: ckanext/harvest/templates/source/admin.html:11
 msgid "View full job report"
-msgstr ""
+msgstr "Näytä koko raportti"
 
 #: ckanext/harvest/templates/source/admin_base.html:7
 #: ckanext/harvest/templates/source/read_base.html:5
@@ -254,19 +268,23 @@ msgstr ""
 
 #: ckanext/harvest/templates/source/admin_base.html:14
 msgid ""
-"This will re-run the harvesting for this source. Any updates at the source "
-"will overwrite the local datasets. Sources with a large number of datasets "
-"may take a significant amount of time to finish harvesting. Please confirm "
-"you would like us to start reharvesting."
+"This will re-run the harvesting for this source. Any updates at the "
+"source will overwrite the local datasets. Sources with a large number of "
+"datasets may take a significant amount of time to finish harvesting. "
+"Please confirm you would like us to start reharvesting."
 msgstr ""
+"Tämä harvestoi lähteen uudelleen. Harvestointilähteeseen tehdyt "
+"päivitykset korvaavat paikalliset tietoaineistot. Jos lähteessä on suuri "
+"määrä tietoaineistoja, harvestoinnin valmistumisessa saattaa kestää "
+"kauan. Haluatko varmasti aloittaa uudelleenharvestoinnin?"
 
 #: ckanext/harvest/templates/source/admin_base.html:17
 msgid "Start a new harvesting job for this harvest source now"
-msgstr ""
+msgstr "Aloita uusi harvestointiajo"
 
 #: ckanext/harvest/templates/source/admin_base.html:19
 msgid "Reharvest"
-msgstr ""
+msgstr "Harvestoi uudelleen"
 
 #: ckanext/harvest/templates/source/admin_base.html:27
 msgid "Stop"
@@ -277,18 +295,23 @@ msgid ""
 "Warning: This will remove all datasets for this source, as well as all "
 "previous job reports. Are you sure you want to continue?"
 msgstr ""
+"Varoitus: Tämä poistaa kaikki tästä lähteestä harvestoidut tietoaineistot"
+" sekä kaikki edelliset harvestointiraportit. Haluatko varmasti tyhjentää "
+"sisällön?"
 
 #: ckanext/harvest/templates/source/admin_base.html:34
 msgid "Delete all harvest jobs and existing datasets from this source"
 msgstr ""
+"Poista kaikki tämän lähteen harvestointiajot ja olemassa olevat "
+"tietoaineistot"
 
 #: ckanext/harvest/templates/source/admin_base.html:35
 msgid "Clear"
-msgstr ""
+msgstr "Tyhjennä"
 
 #: ckanext/harvest/templates/source/admin_base.html:42
 msgid "View harvest source"
-msgstr ""
+msgstr "Näytä harvestointilähde"
 
 #: ckanext/harvest/templates/source/admin_base.html:63
 #: ckanext/harvest/templates/source/admin_base.html:67
@@ -298,47 +321,47 @@ msgstr ""
 #: ckanext/harvest/templates/source/admin_base.html:64
 #: ckanext/harvest/templates/source/admin_base.html:68
 msgid "Jobs"
-msgstr ""
+msgstr "Harvestoinnit"
 
 #: ckanext/harvest/templates/source/admin_base.html:65
 #: ckanext/harvest/templates/source/admin_base.html:69
 msgid "Edit"
-msgstr ""
+msgstr "Muokkaa"
 
 #: ckanext/harvest/templates/source/base.html:16
 msgid "Organizations"
-msgstr ""
+msgstr "Tuottajat"
 
 #: ckanext/harvest/templates/source/base.html:18
 #: ckanext/harvest/templates/source/base.html:21
 #: ckanext/harvest/templates/source/new.html:4
 #: ckanext/harvest/templates/source/search.html:7
 msgid "Harvest Sources"
-msgstr ""
+msgstr "Harvestointilähteet"
 
 #: ckanext/harvest/templates/source/edit.html:3
 msgid "Edit harvest source"
-msgstr ""
+msgstr "Muokkaa harvestointilähdettä"
 
 #: ckanext/harvest/templates/source/new.html:5
 msgid "Create Harvest Source"
-msgstr ""
+msgstr "Lisää uusi harvestointilähde"
 
 #: ckanext/harvest/templates/source/new.html:11
 msgid "Create harvest source"
-msgstr ""
+msgstr "Lisää uusi harvestointilähde"
 
 #: ckanext/harvest/templates/source/new.html:28
 #: ckanext/harvest/templates/source/search.html:3
 msgid "Harvest sources"
-msgstr ""
+msgstr "Harvestointilähteet"
 
 #: ckanext/harvest/templates/source/new.html:31
 msgid ""
-"Harvest sources allow importing remote metadata into this catalog. Remote "
-"sources can be other catalogs such as other CKAN instances, CSW servers or "
-"Web Accessible Folders (WAF) (depending on the actual harvesters enabled for "
-"this instance)."
+"Harvest sources allow importing remote metadata into this catalog. Remote"
+" sources can be other catalogs such as other CKAN instances, CSW servers "
+"or Web Accessible Folders (WAF) (depending on the actual harvesters "
+"enabled for this instance)."
 msgstr ""
 
 #: ckanext/harvest/templates/source/new_source_form.html:11
@@ -347,7 +370,7 @@ msgstr ""
 
 #: ckanext/harvest/templates/source/new_source_form.html:13
 msgid "This should include the http:// part of the URL"
-msgstr ""
+msgstr "Sisällytä URL:n http:// -osa"
 
 #: ckanext/harvest/templates/source/new_source_form.html:19
 msgid "Title"
@@ -359,7 +382,7 @@ msgstr ""
 
 #: ckanext/harvest/templates/source/new_source_form.html:26
 msgid "Name"
-msgstr ""
+msgstr "Nimi"
 
 #: ckanext/harvest/templates/source/new_source_form.html:26
 msgid "eg. my-dataset"
@@ -367,90 +390,96 @@ msgstr ""
 
 #: ckanext/harvest/templates/source/new_source_form.html:28
 msgid "Description"
-msgstr ""
+msgstr "Kuvaus"
 
 #: ckanext/harvest/templates/source/new_source_form.html:48
 msgid "Update frequency"
-msgstr ""
+msgstr "Päivitystiheys"
 
 #: ckanext/harvest/templates/source/new_source_form.html:51
 msgid "Configuration"
-msgstr ""
+msgstr "Konfiguraatio"
 
 #: ckanext/harvest/templates/source/new_source_form.html:71
 msgid "No organization"
-msgstr ""
+msgstr "Ei tuottajaa"
 
 #: ckanext/harvest/templates/source/new_source_form.html:84
 msgid "State"
-msgstr ""
+msgstr "Tila"
 
 #: ckanext/harvest/templates/source/new_source_form.html:87
 msgid "Active"
-msgstr ""
+msgstr "Aktiivinen"
 
 #: ckanext/harvest/templates/source/new_source_form.html:97
 msgid ""
-"This will flag the source as deleted but keep all its datasets and previous "
-"jobs. Are you sure you want to delete this harvest source?"
+"This will flag the source as deleted but keep all its datasets and "
+"previous jobs. Are you sure you want to delete this harvest source?"
 msgstr ""
+"Tämä merkitsee lähteen poistetuksi, mutta ei poista sen tietoaineistoja "
+"tai edellisiä harvestointiajoja. Haluatko varmasti poistaa tämän "
+"harvestointilähteen?"
 
 #: ckanext/harvest/templates/source/new_source_form.html:98
 msgid ""
-"Warning: Apart from deleting this source, this command will remove all its "
-"datasets, as well as all previous job reports. Are you sure you want to "
-"continue?"
+"Warning: Apart from deleting this source, this command will remove all "
+"its datasets, as well as all previous job reports. Are you sure you want "
+"to continue?"
 msgstr ""
+"Varoitus: Lähteen poistamisen lisäksi tämä poistaa kaikki kohteen "
+"tietoaineistot ja edelliset harvestointiraportit. Haluatko varmasti "
+"jatkaa?"
 
 #: ckanext/harvest/templates/source/new_source_form.html:101
 msgid "Delete"
-msgstr ""
+msgstr "Poista"
 
 #: ckanext/harvest/templates/source/new_source_form.html:107
 msgid "Delete source"
-msgstr ""
+msgstr "Poista lähde"
 
 #: ckanext/harvest/templates/source/new_source_form.html:112
 msgid "Delete and clear source"
-msgstr ""
+msgstr "Poista ja tyhjennä lähde"
 
 #: ckanext/harvest/templates/source/read_base.html:24
 msgid "read more"
-msgstr ""
+msgstr "lue lisää"
 
 #: ckanext/harvest/templates/source/read_base.html:53
 #: ckanext/harvest/templates/source/read_base.html:56
 msgid "About"
-msgstr ""
+msgstr "Tietoja"
 
 #: ckanext/harvest/templates/source/search.html:44
 msgid "Relevance"
-msgstr ""
+msgstr "Osuvin ensin"
 
 #: ckanext/harvest/templates/source/search.html:45
 msgid "Name Ascending"
-msgstr ""
+msgstr "Nimen mukaan nousevasti"
 
 #: ckanext/harvest/templates/source/search.html:46
 msgid "Name Descending"
-msgstr ""
+msgstr "Nimen mukaan laskevasti"
 
 #: ckanext/harvest/templates/source/search.html:47
 msgid "Last Modified"
-msgstr ""
+msgstr "Viimeksi muokattu"
 
 #: ckanext/harvest/templates/source/search.html:48
 msgid "Popular"
-msgstr ""
+msgstr "Suosittu"
 
 #: ckanext/harvest/templates/source/search.html:50
 msgid "Search harvest sources..."
-msgstr ""
+msgstr "Etsi harvestointilähteitä..."
 
 #: ckanext/harvest/templates/source/job/list.html:4
 #: ckanext/harvest/templates/source/job/list.html:9
 msgid "Harvest Jobs"
-msgstr ""
+msgstr "Harvestointiajot"
 
 #: ckanext/harvest/templates/source/job/list.html:20
 msgid "Job: "
@@ -458,7 +487,7 @@ msgstr ""
 
 #: ckanext/harvest/templates/source/job/list.html:27
 msgid "Started:"
-msgstr ""
+msgstr "Aloitettu:"
 
 #: ckanext/harvest/templates/source/job/list.html:29
 #: ckanext/harvest/templates/source/job/list.html:34
@@ -467,43 +496,109 @@ msgstr ""
 
 #: ckanext/harvest/templates/source/job/list.html:32
 msgid "Finished:"
-msgstr ""
+msgstr "Valmis:"
 
 #: ckanext/harvest/templates/source/job/read.html:3
 #: ckanext/harvest/templates/source/job/read.html:12
 msgid "Job Report"
-msgstr ""
+msgstr "Harvestointiraportti"
 
 #: ckanext/harvest/templates/source/job/read.html:9
 msgid "Back to job list"
-msgstr ""
+msgstr "Takaisin harvestointilistaukseen"
 
 #: ckanext/harvest/templates/source/job/read.html:19
 msgid "No errors for this job"
-msgstr ""
+msgstr "Ei virheitä tässä harvestoinnissa"
 
 #: ckanext/harvest/templates/source/job/read.html:23
 msgid "Only the 20 most frequent errors are shown"
-msgstr ""
+msgstr "Näytetään 20 yleisintä virhettä"
 
 #: ckanext/harvest/templates/source/job/read.html:30
 #: ckanext/harvest/templates/source/job/read.html:57
 msgid "Document Errors"
-msgstr ""
+msgstr "Tietoaineiston virheet"
 
 #: ckanext/harvest/templates/source/job/read.html:37
 msgid "Error Report"
-msgstr ""
+msgstr "Virheraportti"
 
 #: ckanext/harvest/templates/source/job/read.html:58
 msgid "documents with errors"
-msgstr ""
+msgstr "tietoaineistoa, joilla on virheitä"
 
 #: ckanext/harvest/templates/source/job/read.html:69
 msgid "Remote content"
-msgstr ""
+msgstr "Avaajan palvelimella"
 
 #: ckanext/harvest/templates/source/job/read.html:73
 msgid "Local content"
-msgstr ""
+msgstr "Avoindata.fi:n palvelimella"
+
+#~ msgid "Group not found"
+#~ msgstr "Kategoriaa ei löydy"
+
+#~ msgid "Unauthorized to read group %s"
+#~ msgstr ""
+
+#~ msgid "Groups"
+#~ msgstr ""
+
+#~ msgid "Tags"
+#~ msgstr ""
+
+#~ msgid "Formats"
+#~ msgstr ""
+
+#~ msgid "Licence"
+#~ msgstr "Lisenssi"
+
+#~ msgid ""
+#~ "Cannot create new harvest jobs on "
+#~ "inactive sources. First, please change "
+#~ "the source status to 'active'."
+#~ msgstr ""
+
+#~ msgid ""
+#~ " Harvest sources allow importing remote"
+#~ " metadata into this catalog. Remote "
+#~ "sources can be other catalogs such "
+#~ "as other CKAN instances, CSW servers "
+#~ "or Web Accessible Folders (WAF) "
+#~ "(depending on the actual harvesters "
+#~ "enabled for this instance). "
+#~ msgstr ""
+
+#~ msgid "Return to the harvest sources list"
+#~ msgstr "Palaa harvestointilähteiden sivulle"
+
+#~ msgid " found for \"{query}\""
+#~ msgstr "löytyi haulla \"{query}\""
+
+#~ msgid "Search sources..."
+#~ msgstr "Etsi lähteitä..."
+
+#~ msgid "Search"
+#~ msgstr "Haku"
+
+#~ msgid "Search..."
+#~ msgstr "Haku..."
+
+#~ msgid "All harvest sources"
+#~ msgstr "Kaikki harvestointilähteet"
+
+#~ msgid "Remove"
+#~ msgstr "Poista"
+
+#~ msgid "Try another search term, browse the sources below or "
+#~ msgstr ""
+
+#~ msgid "add a new one"
+#~ msgstr ""
+
+#~ msgid ""
+#~ " <p><strong>There was an error while "
+#~ "searching.</strong> Please try again.</p> "
+#~ msgstr " <p><strong>Haussa tapahtui virhe.</strong> Yritä uudelleen.</p> "
 
