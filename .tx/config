@@ -1,9 +1,9 @@
 [main]
 host = https://www.transifex.com
 
-[ckanext-harvest.ckanext-harvestpot]
-file_filter = i18n/<lang>/LC_MESSAGES/ckanext-harvest.po
-source_file = i18n/ckanext-harvest.pot
+[o:avoindata:p:ytp:r:ckanext-harvest]
+file_filter = ckanext/harvest/i18n/<lang>/LC_MESSAGES/ckanext-harvest.po
+source_file = ckanext/harvest/i18n/ckanext-harvest.pot
 source_lang = en
-type = PO
+type        = PO
 
