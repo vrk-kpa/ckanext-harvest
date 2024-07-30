@@ -1,0 +1,9 @@
+git:
+  filters:
+    - filter_type: file
+      file_format: PO
+      source_language: en
+      source_file: 'ckanext/harvest/i18n/ckanext-harvest.pot'
+      translation_files_expression: 'ckanext/harvest/i18n/<lang>/LC_MESSAGES/ckanext-harvest.po'
+
+
