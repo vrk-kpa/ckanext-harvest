@@ -6,7 +6,6 @@ import uuid
 
 import sqlalchemy as sa
 from sqlalchemy.orm import contains_eager
-from sqlalchemy.sql import update, bindparam
 
 from ckantoolkit import config
 
